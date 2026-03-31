@@ -1,5 +1,74 @@
 # Bias Calibration Tool
 
+macOS 向けのカセットデッキ調整支援アプリです。オーディオ IF のライン入出力を前提に、Bias 調整、Guided UI、Wow & Flutter の簡易測定、テスト信号生成を行います。
+
+## 現在の実装状況
+
+### 実装済み
+
+- SwiftUI ベースの macOS GUI
+- `Bias` `Guided` `Wow & Flutter` `Signal Export` の 4 タブ UI
+- オーディオ入力監視と簡易ステータス表示
+- ホワイトノイズ、10kHz、3kHz のリアルタイム信号生成
+- Noise / Tone / Wow & Flutter の簡易リアルタイム解析
+- WAV 書き出し
+
+### まだ簡易実装のもの
+
+- Wow & Flutter は比較用途向けの簡易推定であり、規格準拠ではない
+- デバイス選択、設定保存、基準オフセット永続化は未実装
+- `OK / OVER / UNDER` の閾値は固定で、テープ種別プリセットは未実装
+- 厳密な校正フローとループバック測定 UI は未実装
+
+## 使い方
+
+### 必要環境
+
+- macOS
+- Swift 6 以上
+- Xcode Command Line Tools
+
+### 起動
+
+```bash
+swift run
+```
+
+### テスト信号の書き出し
+
+```bash
+swift run CassetteCalibrator --export-signals
+```
+
+生成されるファイル:
+
+- `calibration_noise.wav`
+- `calibration_tone_10k.wav`
+- `calibration_tone_3k.wav`
+
+### 操作の流れ
+
+1. カセットデッキをオーディオ IF のライン入力へ接続する
+2. `Bias` タブでホワイトノイズまたはトーンを再生しながら入力を確認する
+3. `Guided` タブで調整手順を追う
+4. 必要に応じて `Signal Export` から WAV を書き出す
+
+## プロジェクト構成
+
+```text
+Package.swift
+Sources/CassetteCalibrator/
+  CassetteCalibratorApp.swift
+  ContentView.swift
+  CalibrationViewModel.swift
+  AudioController.swift
+  SignalExporter.swift
+  BiasView.swift
+  GuidedView.swift
+  WowFlutterView.swift
+  SignalExportView.swift
+```
+
 ## 要件定義書 + 基本設計
 
 ### 1. システム概要
@@ -205,6 +274,7 @@ RMS 算出
 ```text
 calibration_noise.wav
 calibration_tone_10k.wav
+calibration_tone_3k.wav
 ```
 
 ##### 仕様
