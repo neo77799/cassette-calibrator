@@ -2,16 +2,17 @@ import SwiftUI
 
 struct SignalExportView: View {
     @EnvironmentObject private var viewModel: CalibrationViewModel
+    @EnvironmentObject private var localizer: AppLocalizer
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
-            GroupBox("Export Test Signals") {
+            GroupBox(localizer.text(.exportSignals)) {
                 VStack(alignment: .leading, spacing: 14) {
-                    Text("Writes 44.1 kHz stereo WAV files into the current project directory.")
+                    Text(localizer.text(.exportDescription))
                         .foregroundStyle(.secondary)
 
                     HStack {
-                        Button("Export WAV Files") {
+                        Button(localizer.text(.exportWavFiles)) {
                             viewModel.exportSignals()
                         }
                         .buttonStyle(.borderedProminent)
@@ -24,7 +25,7 @@ struct SignalExportView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            GroupBox("Included Files") {
+            GroupBox(localizer.text(.includedFiles)) {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("calibration_noise.wav")
                     Text("calibration_tone_10k.wav")
